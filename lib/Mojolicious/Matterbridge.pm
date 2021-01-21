@@ -5,6 +5,8 @@ use Mojo::Base 'Mojo::EventEmitter';
 use Moo::Role 2;
 use API::Matterbridge::Message;
 
+use Term::ANSIColor;
+
 use feature 'current_sub';
 use Filter::signatures;
 use feature 'signatures';
@@ -59,8 +61,9 @@ sub build_request( $self, %parameters ) {
 
 sub connect( $self ) {
     # Fetch all the pent up rage
-    #$self->get_messages();
+    # $self->get_messages();
     $self->get_stream();
+    print colored(sprintf("Connected to Matterbridge at '%s'", $self->url), 'green'), "\n";
 }
 
 sub get_messages( $self ) {

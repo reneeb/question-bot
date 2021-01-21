@@ -1,0 +1,25 @@
+[[gateway]]
+name="gateway1"
+enable=true
+
+[api.myapi]
+BindAddress="127.0.0.1:4242"
+Buffer=1000
+RemoteNickFormat="{NICK}"
+
+[matrix.mymatrix]
+Server="https://matrix.org"
+Login="questionbot"
+Password="fM4JeXzqYEEuNjHtVdAR"
+
+RemoteNickFormat="{NICK}"
+NoHomeServerSuffix=false
+
+[[gateway.inout]]
+account="matrix.mymatrix"
+channel="!PhELCblrFTwBBlWfhc:matrix.org"
+#options = { key="password" }
+
+[[gateway.inout]]
+account="api.myapi"
+channel="api"
