@@ -1,0 +1,7 @@
+---
+bot:
+  question_prefix: 'F:' 
+etherpad:
+  url: http://localhost:3712
+  apikey: df7547725528fe12481c1d6715c1abb19b0f32e6a0ed8b2a7832084af0f2facf
+  title_prefix: [Fragen]

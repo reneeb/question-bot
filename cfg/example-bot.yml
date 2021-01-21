@@ -1,0 +1,14 @@
+---
+bot:
+  name: # WIP: name of the bot, not used at the moment
+  question_prefix: # prefix that indicates a question, it is case insensitive and
+                   # a space maybe present after the prefix (default: 'q:').
+etherpad:
+  url: # base url of the etherpad instance
+  apikey: # (REQUIRED) insert content of APIKEY.txt
+  title_prefix: [Fragen] # Prefix of the Etherpad title. 
+                         # The title consists of "$prefix $topic", 
+                         # where $topic is specified via the CLI, 
+                         # and $prefix can be configured here.
+  user: # user for etherpad, remove if no authentication is required
+  password: # password for etherpad, remove if no authentication is required

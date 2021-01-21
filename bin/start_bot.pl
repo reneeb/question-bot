@@ -1,17 +1,18 @@
 #!/usr/bin/env perl
-use sigtrap 'handler', \&close, 'normal-signals';
+use v5.10;
+use Getopt::Long qw/:config auto_abbrev bundling/;
+use File::Basename;
+use Cwd 'abs_path';
 
+my $mtb_config = abs_path(dirname(__FILE__)) . '/../cfg/matrix-matterbridge.toml';
 
-defined(my $pid = fork) or die "Cannot fork: $!";
-unless ($pid) { 
-	exec "matterbridge -conf cfg/matrix-matterbridge.toml > /dev/null";
-}
+my $matterbridge = "matterbridge -conf $mtb_config";
+my $question_bot = 'perl -I lib bin/bot.pl';
+my $config_path = '';
+GetOptions('config=s' => \$config_path);
+$config_path = "--config $config_path" if ($config_path);
+my $talk_topic = $ARGV[0];
 
-sub close {
-    kill 'INT', $pid;
-    die "Received Interrupt, exiting...\n";
-}
-
+open MTB, $matterbridge . ' |';
 sleep 1;
-
-system "perl -I lib bin/bot.pl $ARGV[0]";
+system join ' ', $question_bot, $config_path, $talk_topic;
