@@ -16,3 +16,6 @@ bin/start_bot.pl --conf myconfig.yml mytopic
 ```
 
 In the `cfg` directory is an example configuration file `example-bot.yml` with all possible options.
+
+## Acknowledgments
+Thanks to [@Corion](https://github.com/Corion) for providing a simple API for sending and receiving messages from Matterbridge. Link to his bot https://github.com/Corion/Bot-Matterbridge.
