@@ -1,0 +1,10 @@
+requires 'Filter::signatures';
+requires 'JSON';
+requires 'JSON::XS';
+requires 'Mojo::Base';
+requires 'Mojo::UserAgent';
+requires 'Moo';
+requires 'Moo::Role';
+requires 'URI';
+requires 'URI::Encode';
+requires 'Etherpad';
