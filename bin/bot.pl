@@ -9,11 +9,13 @@ use utf8;
 use Etherpad;
 use Getopt::Long qw/:config auto_abbrev bundling/;
 use List::Util qw(first);
-use Mojolicious::Matterbridge;
 use Mojo::File qw(curfile);
 use Term::ANSIColor;
 use URI::Encode qw/uri_encode/;
 use YAML::Tiny;
+
+use lib curfile->dirname->sibling('lib')->to_string;
+use Mojolicious::Matterbridge;
 
 use feature 'signatures';
 no warnings 'experimental::signatures';
@@ -38,6 +40,8 @@ sub _run ( $config_path, $talks_path ) {
         url => 'http://localhost:4242/api/',
     );
 
+    my $question_prefix = $config->{bot}->{question_prefix} || 'q:';
+
     my $talk = { id => -1 };
 
     $client->on('message' => sub( $c, $message ) {
@@ -46,18 +50,18 @@ sub _run ( $config_path, $talks_path ) {
         my $talk_timestamp = first { time > $_ } reverse sort keys $talks->%*;
         my $current_talk   = $talks->{$talk_timestamp};
 
-        eval {
-            my @messages = _handle_message( $message );
-            $etherpad->append_text( $current_talk->{pad_id}, "$_\n" ) for @messages;
-        };
-        warn $@ if $@;
-
         # if current_talk is different to talk, then send a message to matrix
         # with the URL of the current pad TODO
         if ( $current_talk->{id} != $talk->{id} ) {
             $talk = $current_talk;
             $client->send(sprintf "Fragen zum aktuellen Vortrag werden unter %s gesammelt", $talk->{url});
         }
+
+        eval {
+            my @messages = _handle_message( $question_prefix, $message );
+            $etherpad->append_text( $talk->{slug}, "$_\n" ) for @messages;
+        };
+        warn $@ if $@;
     });
 
     $client->connect();
@@ -82,10 +86,9 @@ sub _connect_to_etherpad ( $config ) {
     return $etherpad;
 }
 
-sub handle_message( $msg ) {
+sub handle_message( $prefix, $msg ) {
     my @questions;
 
-    my $question_prefix = $config->{bot}->{question_prefix} || 'q:';
 
     # Retrieve question
     if( $msg->text =~ m{^(?: $question_prefix\s | $question_prefix) (.*)$}xi ) {
