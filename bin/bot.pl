@@ -89,9 +89,8 @@ sub _connect_to_etherpad ( $config ) {
 sub handle_message( $prefix, $msg ) {
     my @questions;
 
-
     # Retrieve question
-    if( $msg->text =~ m{^(?: $question_prefix\s | $question_prefix) (.*)$}xi ) {
+    if( $msg->text =~ m{^(?: $prefix\s | $prefix) (.*)$}xi ) {
         my $question = $1;
         # Append ? to question if not already present
         $question .= '?' unless $question =~ m{\?$}x;
@@ -101,6 +100,6 @@ sub handle_message( $prefix, $msg ) {
         #print sprintf "Ignoring '%s'\n", $msg->text;
     };
 
-    return $pad_id, @questions;
+    return @questions;
 }
 
