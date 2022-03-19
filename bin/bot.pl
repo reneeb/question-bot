@@ -37,7 +37,7 @@ sub _run ( $config_path, $talks_path ) {
     my $etherpad = _connect_to_etherpad( $config );
 
     my $client = Mojolicious::Matterbridge->new(
-        url => 'http://localhost:4242/api/',
+        url => $config->{matterbridge} || 'http://localhost:4242/api/',
     );
 
     my $question_prefix = $config->{bot}->{question_prefix} || 'q:';
