@@ -54,7 +54,10 @@ sub _run ( $config_path, $talks_path ) {
         # with the URL of the current pad TODO
         if ( $current_talk->{id} != $talk->{id} ) {
             $talk = $current_talk;
-            $client->send(sprintf "Fragen zum aktuellen Vortrag werden unter %s gesammelt", $talk->{url});
+            $client->send({
+                text => ( sprintf "Fragen zum aktuellen Vortrag werden unter %s gesammelt",
+                    $talk->{url}),
+            });
         }
 
         eval {
