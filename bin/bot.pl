@@ -89,7 +89,7 @@ sub _connect_to_etherpad ( $config ) {
     return $etherpad;
 }
 
-sub handle_message( $prefix, $msg ) {
+sub _handle_message( $prefix, $msg ) {
     my @questions;
 
     # Retrieve question
