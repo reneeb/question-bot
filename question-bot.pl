@@ -100,3 +100,19 @@ sub _connect_to_etherpad ( $config ) {
     return $etherpad;
 }
 
+sub _handle_message( $prefix, $member, $msg ) {
+    my @questions;
+
+    # Retrieve question
+    if( $msg =~ m{^(?: $prefix\s | $prefix) (.*)$}xi ) {
+        my $question = $1;
+
+        # Append ? to question if not already present
+        $question .= '?' unless $question =~ m{[?!.]$}x;
+
+        push @questions, sprintf "<%s> %s", $member->displayname, $question;
+    } 
+
+    return @questions;
+}
+
