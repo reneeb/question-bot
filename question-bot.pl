@@ -45,6 +45,8 @@ sub _run ( $config_path, $talks_path ) {
         on_room_message => sub {
             my ($room, $member, $content, $event) = @_;
 
+            return if ( ( $event->{origin_server_ts} / 1000 ) < time - 2 );
+
             my $msg = $content->{body};
             print colored(sprintf("<%s> %s", $member->displayname, $msg), 'yellow'), "\n";
 
